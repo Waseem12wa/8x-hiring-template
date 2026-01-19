@@ -5,30 +5,49 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Sparkles, Zap, Shield } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { CheckCircle, Sparkles, CreditCard, Lock, Calendar } from "lucide-react"
 import { useSubscription } from "@/contexts/subscription-context"
 import { useAuth } from "@/contexts/auth-context"
 import { toast } from "sonner"
 
 export default function UpgradePage() {
-  const { isPro, tier, upgradeToPro, downgradeToFree, isLoading: subLoading } = useSubscription()
+  const { isPro, upgradeToPro, downgradeToFree, isLoading: subLoading } = useSubscription()
   const { user, isLoading: authLoading } = useAuth()
   const router = useRouter()
   const [isProcessing, setIsProcessing] = useState(false)
 
-  const handleUpgrade = async () => {
+  // Fake Checkout Form State
+  const [cardNumber, setCardNumber] = useState("")
+  const [expiry, setExpiry] = useState("")
+  const [cvc, setCvc] = useState("")
+  const [name, setName] = useState("")
+
+  const handleUpgrade = async (e: React.FormEvent) => {
+    e.preventDefault()
+
     if (!user) {
       router.push("/auth/signup?returnUrl=/upgrade")
       return
     }
 
+    if (!cardNumber || !expiry || !cvc || !name) {
+      toast.error("Please fill in all payment details")
+      return
+    }
+
     setIsProcessing(true)
+
     try {
+      // Simulate payment processing delay
+      await new Promise(resolve => setTimeout(resolve, 2000))
+
       await upgradeToPro()
-      toast.success("Welcome to Pro! You now have access to all features.")
-      router.push("/upgrade/success")
+      toast.success("Payment successful! Welcome to Pro.")
+      router.push("/upgrade/success") // Assuming this page exists or we just show success state here
     } catch (error) {
-      toast.error("Failed to upgrade. Please try again.")
+      toast.error("Payment failed. Please try again.")
       console.error(error)
     } finally {
       setIsProcessing(false)
@@ -51,7 +70,7 @@ export default function UpgradePage() {
   // Show current subscription if Pro
   if (isPro && !subLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background text-foreground">
         <Navigation />
         <div className="flex items-center justify-center px-4 py-16 min-h-[calc(100vh-80px)]">
           <div className="max-w-2xl w-full">
@@ -123,101 +142,137 @@ export default function UpgradePage() {
     )
   }
 
-  // Show pricing for free users
+  // Show Checkout for free users
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <Navigation />
-      <div className="flex items-center justify-center px-4 py-16 min-h-[calc(100vh-80px)]">
-        <div className="max-w-4xl w-full">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-6xl font-light tracking-tight mb-4">
-              Upgrade to <span className="font-semibold text-primary">Pro</span>
-            </h1>
-            <p className="text-xl text-muted-foreground font-light">
-              Unlock all features and take your experience to the next level.
-            </p>
-          </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
 
-          {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {/* Free Plan */}
-            <div className="border border-border rounded-2xl p-8 bg-card/50">
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-muted-foreground mb-2">Free</h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$0</span>
-                  <span className="text-muted-foreground">/month</span>
+          {/* Left Column: Summary */}
+          <div className="space-y-8">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">Upgrade to Pro</h1>
+              <p className="text-muted-foreground text-lg">Unleash your full potential with unlimited access.</p>
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-6 shadow-sm">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h3 className="text-xl font-bold">Pro Plan</h3>
+                  <p className="text-muted-foreground">Monthly subscription</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-3xl font-bold">$29</span>
+                  <span className="text-muted-foreground">/mo</span>
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-3 text-muted-foreground">
-                  <CheckCircle className="w-5 h-5 text-muted-foreground/50" />
-                  Basic features
-                </li>
-                <li className="flex items-center gap-3 text-muted-foreground">
-                  <CheckCircle className="w-5 h-5 text-muted-foreground/50" />
-                  Limited usage
-                </li>
-                <li className="flex items-center gap-3 text-muted-foreground">
-                  <CheckCircle className="w-5 h-5 text-muted-foreground/50" />
-                  Community support
-                </li>
+              <ul className="space-y-4 pt-6 border-t border-border">
+                {[
+                  "Unlimited video & image generations",
+                  "Fast priority processing",
+                  "No watermarks",
+                  "Commercial license",
+                  "Priority support"
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-indigo-500" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
               </ul>
-
-              <Button variant="outline" className="w-full" disabled>
-                Current Plan
-              </Button>
             </div>
+          </div>
 
-            {/* Pro Plan */}
-            <div className="relative border-2 border-primary rounded-2xl p-8 bg-card/50">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
-                Recommended
+          {/* Right Column: Checkout Form */}
+          <div className="bg-card border border-border rounded-2xl p-8 shadow-lg">
+            <h2 className="text-2xl font-semibold mb-6">Secure Checkout</h2>
+
+            <form onSubmit={handleUpgrade} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="name">Cardholder Name</Label>
+                <Input
+                  id="name"
+                  placeholder="John Doe"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  disabled={isProcessing}
+                  required
+                />
               </div>
 
-              <div className="mb-6">
-                <h3 className="text-lg font-medium text-primary mb-2 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" />
-                  Pro
-                </h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$9.99</span>
-                  <span className="text-muted-foreground">/month</span>
+              <div className="space-y-2">
+                <Label htmlFor="card">Card Number</Label>
+                <div className="relative">
+                  <Input
+                    id="card"
+                    placeholder="0000 0000 0000 0000"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
+                    disabled={isProcessing}
+                    required
+                  />
+                  <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 </div>
               </div>
 
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-3">
-                  <Zap className="w-5 h-5 text-primary" />
-                  Unlimited access to all features
-                </li>
-                <li className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-primary" />
-                  Priority support
-                </li>
-                <li className="flex items-center gap-3">
-                  <Sparkles className="w-5 h-5 text-primary" />
-                  Advanced analytics & insights
-                </li>
-              </ul>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="expiry">Expiry Date</Label>
+                  <div className="relative">
+                    <Input
+                      id="expiry"
+                      placeholder="MM/YY"
+                      value={expiry}
+                      onChange={(e) => setExpiry(e.target.value)}
+                      disabled={isProcessing}
+                      required
+                    />
+                    <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="cvc">CVC</Label>
+                  <div className="relative">
+                    <Input
+                      id="cvc"
+                      placeholder="123"
+                      value={cvc}
+                      onChange={(e) => setCvc(e.target.value)}
+                      disabled={isProcessing}
+                      required
+                    />
+                    <Lock className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  </div>
+                </div>
+              </div>
 
-              <Button
-                className="w-full"
-                size="lg"
-                onClick={handleUpgrade}
-                disabled={isProcessing || authLoading || subLoading}
-              >
-                {isProcessing ? "Processing..." : "Upgrade to Pro"}
-              </Button>
-            </div>
+              <div className="pt-4">
+                <Button
+                  type="submit"
+                  className="w-full h-12 text-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all"
+                  disabled={isProcessing || authLoading || subLoading}
+                >
+                  {isProcessing ? (
+                    <>
+                      <Sparkles className="w-5 h-5 mr-2 animate-spin" />
+                      Processing Payment...
+                    </>
+                  ) : (
+                    <>
+                      Pay $29.00
+                    </>
+                  )}
+                </Button>
+                <p className="text-xs text-center text-muted-foreground mt-4 flex items-center justify-center gap-1">
+                  <Lock className="w-3 h-3" />
+                  Payments are secure and encrypted. This is a demo.
+                </p>
+              </div>
+            </form>
           </div>
 
-          {/* Footer note */}
-          <div className="text-center text-sm text-muted-foreground">
-            <p>This is a demo. No real payment is processed.</p>
-          </div>
         </div>
       </div>
     </div>

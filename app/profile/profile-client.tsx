@@ -20,11 +20,10 @@ import { useState } from "react"
 import { useSubscription } from "@/contexts/subscription-context"
 import { toast } from "sonner"
 
+import { User } from "@supabase/supabase-js"
+
 interface ProfileClientProps {
-  user: {
-    id: string
-    email: string
-  }
+  user: User
 }
 
 export function ProfileClient({ user }: ProfileClientProps) {
