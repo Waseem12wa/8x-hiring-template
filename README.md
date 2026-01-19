@@ -15,7 +15,7 @@ A modern SaaS starter template for frontend engineering assessments. Built with 
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/Waseem12wa/8x-hiring-template.git
    cd 8x-hiring-template
    ```
 
@@ -49,7 +49,7 @@ A modern SaaS starter template for frontend engineering assessments. Built with 
    Then edit `.env.local` with the keys from step 3:
    ```
    NEXT_PUBLIC_SUPABASE_URL="http://127.0.0.1:54521"
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="<your-publishable-key>"
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="Here was key"
    SUPABASE_SERVICE_ROLE_KEY="<your-secret-key>"
    ```
 
@@ -126,3 +126,17 @@ CREATE TABLE subscriptions (
 ---
 
 See [CANDIDATE_ASSIGNMENT.md](./CANDIDATE_ASSIGNMENT.md) for assessment instructions.
+
+---
+
+## Setup Notes & Observations
+
+### What I did to get it running
+I ran into some trouble getting the local Supabase setup to work on my Windows machine—specifically, `supabase start` kept failing with Docker container name conflicts. Instead of fighting with Docker, I decided to be practical and switch to a **Cloud Supabase** project. 
+
+I created a free project on Supabase, updated my `.env.local` with the cloud credentials, and manually ran the SQL scripts to create the necessary tables. Now everything connects perfectly!
+
+### First impressions
+The codebase seems really solid. I like that the auth logic is already handled in the context, and using Shadcn for UI components is going to make building the frontend way faster. The structure is clean and standard for a Next.js app, so I feel comfortable diving in.
+
+I'm ready to start building the core features now!
