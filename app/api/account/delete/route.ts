@@ -17,10 +17,8 @@ export async function POST() {
     }
 
     const userId = user.id
-    console.log(`[Delete Account] Starting deletion for user: ${userId}`)
 
-    // 2. Stripe logic removed (Fake payments)
-    console.log(`[Delete Account] Skipping Stripe deletion (Fake Mode)`)
+    // 2. Stripe logic skipped (Fake payments)
 
     // 4. Delete Supabase auth user (triggers CASCADE DELETE on all related tables)
     // This requires admin privileges (service role key)
@@ -36,8 +34,6 @@ export async function POST() {
           { status: 500 }
         )
       }
-
-      console.log(`[Delete Account] ✅ User deleted successfully: ${userId}`)
     } catch (deleteError) {
       console.error("[Delete Account] ❌ Exception during user deletion:", deleteError)
       return NextResponse.json(

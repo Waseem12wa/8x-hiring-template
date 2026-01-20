@@ -140,3 +140,5 @@ I created a free project on Supabase, updated my `.env.local` with the cloud cre
 The codebase seems really solid. I like that the auth logic is already handled in the context, and using Shadcn for UI components is going to make building the frontend way faster. The structure is clean and standard for a Next.js app, so I feel comfortable diving in.
 
 I'm ready to start building the core features now!
+
+
