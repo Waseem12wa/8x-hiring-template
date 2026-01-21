@@ -78,14 +78,34 @@ export default function DressChangerPage() {
 
         setIsProcessing(true)
 
-        // Mock processing delay
-        await new Promise(resolve => setTimeout(resolve, 3500))
+        try {
+            // Convert to base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                const base64 = reader.result as string;
 
-        // Return a mock result (random unsplash fashion image)
-        setResult(`https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop&random=${Date.now()}`)
+                const { editImage } = await import("@/app/actions/ai")
+                const response = await editImage(base64, "Change the dress to a high fashion outfit", "clothing")
 
-        setIsProcessing(false)
-        toast.success("Dress changed successfully!")
+                if (response.success) {
+                    setResult(response.url)
+                    toast.success("Dress changed successfully!")
+                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                } else {
+                    toast.error("Failed to process image")
+                }
+                setIsProcessing(false)
+            };
+            reader.onerror = () => {
+                toast.error("Failed to read file")
+                setIsProcessing(false)
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error("Something went wrong")
+            setIsProcessing(false)
+        }
     }
 
     return (

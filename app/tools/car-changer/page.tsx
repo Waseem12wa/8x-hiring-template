@@ -86,14 +86,34 @@ export default function CarChangerPage() {
 
         setIsProcessing(true)
 
-        // Mock processing delay
-        await new Promise(resolve => setTimeout(resolve, 4000))
+        try {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                const base64 = reader.result as string;
 
-        // Return a mock result (random car image)
-        setResult(`https://images.unsplash.com/photo-1542362567-b07e54358753?q=80&w=800&auto=format&fit=crop&random=${Date.now()}`)
+                const { editImage } = await import("@/app/actions/ai")
+                const carName = carModels.find(c => c.id === selectedCar)?.name || "sports car"
+                const response = await editImage(base64, `Change the car to a ${carName}`, "car")
 
-        setIsProcessing(false)
-        toast.success("Car replaced successfully!")
+                if (response.success) {
+                    setResult(response.url)
+                    toast.success("Car replaced successfully!")
+                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                } else {
+                    toast.error("Failed to process image")
+                }
+                setIsProcessing(false)
+            };
+            reader.onerror = () => {
+                toast.error("Failed to read file")
+                setIsProcessing(false)
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error("Something went wrong")
+            setIsProcessing(false)
+        }
     }
 
     return (

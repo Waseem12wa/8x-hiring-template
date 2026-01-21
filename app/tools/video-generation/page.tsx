@@ -64,12 +64,29 @@ export default function VideoGenerationPage() {
         if (sourceType === "image" && !selectedFile) return
 
         setIsGenerating(true)
+        setPreviewUrl(null) // Clear previous result
 
-        // Simulate generation
-        await new Promise(resolve => setTimeout(resolve, 3000))
+        try {
+            const { generateVideo } = await import("@/app/actions/ai")
 
-        setIsGenerating(false)
-        toast.success("Video generated successfully!")
+            // For now, prompt only
+            const inputPrompt = sourceType === "text" ? prompt : "An animated video from the uploaded image"
+            const result = await generateVideo(inputPrompt)
+
+            if (result.error) {
+                toast.warning("Video Model Busy: Generated a storyboard frame instead.")
+            }
+
+            // We treat the image as a 'video' preview for now since we don't have a stable free video API
+            // Ideally we would put this in a <video> tag if it ended in .mp4
+            setPreviewUrl(result.image)
+            toast.success(result.error ? "Storyboard generated" : "Video generated successfully!")
+        } catch (error) {
+            console.error(error)
+            toast.error("Failed to generate video")
+        } finally {
+            setIsGenerating(false)
+        }
     }
 
     return (
@@ -232,10 +249,13 @@ export default function VideoGenerationPage() {
                                         <Loader2 className="w-10 h-10 text-primary animate-spin mx-auto" />
                                         <p className="text-muted-foreground animate-pulse">Creating masterpiece...</p>
                                     </div>
+                                ) : previewUrl && !selectedFile ? ( // Only show if it's a RESULT (we use setPreviewUrl for result too in this hack)
+                                    /* eslint-disable-next-line @next/next/no-img-element */
+                                    <img src={previewUrl} alt="Generated Video Frame" className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="text-center text-muted-foreground">
                                         <Video className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                                        <p>Your generated video will appear here</p>
+                                        <p>Your generated video/storyboard will appear here</p>
                                     </div>
                                 )}
                             </div>

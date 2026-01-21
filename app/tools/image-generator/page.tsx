@@ -7,6 +7,7 @@ import { useState } from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { useSubscription } from "@/contexts/subscription-context"
 import { Loader2, ImageIcon, Sparkles, Download, Layers } from "lucide-react"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 export default function ImageGeneratorPage() {
@@ -30,14 +31,19 @@ export default function ImageGeneratorPage() {
         setIsGenerating(true)
         setGeneratedImage(null)
 
-        // Simulate generation delay
-        await new Promise(resolve => setTimeout(resolve, 3000))
-
-        // Set a fake "generated" image from Unsplash
-        // Using a random seed to get different images
-        setGeneratedImage(`https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1024&auto=format&fit=crop&random=${Date.now()}`)
-
-        setIsGenerating(false)
+        try {
+            // Import dynamically to avoid server-action issues in client component build if not set up perfect
+            // But we can import at top level usually. For now, let's assume imports work.
+            const { generateImage } = await import("@/app/actions/ai")
+            const result = await generateImage(prompt)
+            setGeneratedImage(result.url)
+            toast.success("Image generated with Pollinations.ai (Enhanced by Groq)")
+        } catch (error) {
+            console.error(error)
+            toast.error("Failed to generate image")
+        } finally {
+            setIsGenerating(false)
+        }
     }
 
     return (

@@ -77,14 +77,33 @@ export default function PersonReplacerPage() {
 
         setIsProcessing(true)
 
-        // Mock processing delay
-        await new Promise(resolve => setTimeout(resolve, 3500))
+        try {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+                const base64 = reader.result as string;
 
-        // Return a mock result (random portrait image)
-        setResult(`https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop&random=${Date.now()}`)
+                const { editImage } = await import("@/app/actions/ai")
+                const response = await editImage(base64, "Replace the person in the image with a cybernetic android", "person")
 
-        setIsProcessing(false)
-        toast.success("Person replaced successfully!")
+                if (response.success) {
+                    setResult(response.url)
+                    toast.success("Person replaced successfully!")
+                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                } else {
+                    toast.error("Failed to process image")
+                }
+                setIsProcessing(false)
+            };
+            reader.onerror = () => {
+                toast.error("Failed to read file")
+                setIsProcessing(false)
+            }
+        } catch (error) {
+            console.error(error)
+            toast.error("Something went wrong")
+            setIsProcessing(false)
+        }
     }
 
     return (
