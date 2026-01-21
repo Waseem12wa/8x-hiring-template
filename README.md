@@ -101,14 +101,69 @@ See [CANDIDATE_ASSIGNMENT.md](./CANDIDATE_ASSIGNMENT.md) for assessment instruct
 
 ## Setup Notes & Observations
 
-### What I did to get it running
-I ran into some trouble getting the local Supabase setup to work on my Windows machine—specifically, `supabase start` kept failing with Docker container name conflicts. Instead of fighting with Docker, I decided to be practical and switch to a **Cloud Supabase** project. 
+### What I built
+A fully functional SaaS frontend application matching the babiceva.ai reference design with:
+- Complete authentication system (signup, login, logout, password validation)
+- Protected routes with middleware-based redirection
+- Subscription tier system (Free/Pro) with fake checkout flow
+- 5 AI tool pages with form handling, file uploads, and mock API responses
+- Responsive design with dark/light theme support
+- Complete user profile management with account deletion
+- Pricing page with feature comparison
+- Proper error handling and user feedback via toast notifications
 
-I created a free project on Supabase, updated my `.env.local` with the cloud credentials, and manually ran the SQL scripts to create the necessary tables. Now everything connects perfectly!
+### Issues I faced & how I solved them
 
-### First impressions
-The codebase seems really solid. I like that the auth logic is already handled in the context, and using Shadcn for UI components is going to make building the frontend way faster. The structure is clean and standard for a Next.js app, so I feel comfortable diving in.
+**Issue 1: Local Supabase Setup**
+- Problem: `supabase start` failed on Windows with Docker container conflicts and network issues
+- Solution: Switched to cloud Supabase (free tier). Created a project on supabase.co, ran SQL migrations manually, updated `.env.local` with cloud credentials. This was actually faster and more reliable than fighting Docker.
 
-I'm ready to start building the core features now!
+**Issue 2: Auth Context Timeout Safety**
+- Problem: Auth context loading state could hang indefinitely if session fetch fails
+- Solution: Added a 10-second timeout as a safety guard that forces `isLoading` to false, ensuring UI always becomes interactive
 
+**Issue 3: File Upload Validation**
+- Problem: File uploads needed size/type validation without external libraries
+- Solution: Implemented client-side validation in upload handlers - checking MIME type and file size before processing
+
+**Issue 4: Subscription Auto-creation**
+- Problem: First-time users had no subscription record, breaking tier checks
+- Solution: Implemented auto-creation in subscription context - when a new user logs in, a Free tier subscription is automatically created
+
+**Issue 5: Middleware Deprecation Warning**
+- Problem: Next.js 16 shows deprecation warning for "middleware" file convention
+- Solution: Kept existing middleware structure (it works fine), but this could be refactored to use the new "proxy" convention in a future update
+
+### What I would improve with more time
+
+1. **Real file upload handling**: Currently file uploads are mocked. In production, would integrate with AWS S3 or similar for persistent storage.
+
+2. **Actual AI API integration**: Replace mock 3-second delays with real calls to Replicate API, OpenAI, or similar services.
+
+3. **Real payment processing**: Integrate with Stripe for actual payments instead of simulating checkout.
+
+4. **Better error recovery**: Add retry logic for failed API calls and more granular error messages.
+
+5. **Performance optimizations**:
+   - Image lazy loading and optimization
+   - Code splitting for tool pages
+   - Database query caching with Redis
+
+6. **Analytics and monitoring**: Add error tracking (Sentry), usage analytics, and performance monitoring.
+
+7. **Accessibility improvements**: Full WCAG 2.1 compliance, keyboard navigation for all interactive elements, ARIA labels.
+
+8. **Tests**: Add unit tests for contexts, integration tests for API routes, E2E tests for critical user flows.
+
+9. **Email verification**: Enable Supabase email verification in production (currently disabled for dev convenience).
+
+10. **Admin dashboard**: Add admin panel for viewing user statistics, managing tiers, handling support issues.
+
+---
+
+### Development notes
+- All components follow React 19 best practices with proper state management
+- UI components from shadcn/ui ensure consistency and accessibility
+- Error boundaries could be added for better error recovery
+- Subscription context could be optimized to reduce re-renders using useReducer
 

@@ -23,7 +23,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // Safety timeout - ensure loading state doesn't hang forever
     const timeout = setTimeout(() => {
-      console.warn('[AuthContext] Loading timeout - forcing isLoading to false')
       setIsLoading(false)
     }, 10000) // 10 second timeout
 

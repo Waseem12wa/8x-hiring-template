@@ -48,7 +48,6 @@ export default function UpgradePage() {
       router.push("/upgrade/success") // Assuming this page exists or we just show success state here
     } catch (error) {
       toast.error("Payment failed. Please try again.")
-      console.error(error)
     } finally {
       setIsProcessing(false)
     }
@@ -61,7 +60,6 @@ export default function UpgradePage() {
       toast.success("You've been downgraded to the Free plan.")
     } catch (error) {
       toast.error("Failed to downgrade. Please try again.")
-      console.error(error)
     } finally {
       setIsProcessing(false)
     }

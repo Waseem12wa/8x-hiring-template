@@ -27,7 +27,7 @@ interface ProfileClientProps {
 }
 
 export function ProfileClient({ user }: ProfileClientProps) {
-  const { isPro, tier, downgradeToFree, refresh } = useSubscription()
+  const { isPro, downgradeToFree } = useSubscription()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [isDowngrading, setIsDowngrading] = useState(false)
