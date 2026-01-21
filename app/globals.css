@@ -3,6 +3,59 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* LIGHT MODE TOKENS */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.12 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.12 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0 0);
+  
+  /* Primary color: Dark Wine/Burgundy (Same as dark mode for brand identity) */
+  --primary: oklch(0.33 0.14 18);
+  --primary-foreground: oklch(0.98 0 0);
+  
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.2 0 0);
+  
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.2 0 0);
+  
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  
+  --border: oklch(0.89 0 0);
+  --input: oklch(0.89 0 0);
+  --ring: oklch(0.33 0.14 18);
+  
+  --chart-1: oklch(0.33 0.14 18);
+  --chart-2: oklch(0.30 0.12 18);
+  --chart-3: oklch(0.43 0.16 18);
+  --chart-4: oklch(0.26 0.10 18);
+  --chart-5: oklch(0.53 0.15 18);
+  
+  --radius: 0.5rem;
+  
+  --sidebar: oklch(0.98 0 0);
+  --sidebar-foreground: oklch(0.2 0 0);
+  --sidebar-primary: oklch(0.33 0.14 18);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.2 0 0);
+  --sidebar-border: oklch(0.89 0 0);
+  --sidebar-ring: oklch(0.33 0.14 18);
+
+  /* Preview mode colors */
+  --preview: oklch(0.33 0.14 18);
+  --preview-light: oklch(0.43 0.16 18);
+  --preview-lighter: oklch(0.53 0.15 18);
+  --preview-dark: oklch(0.26 0.12 18);
+}
+
+.dark {
   /* Ultrathink dark-mode premium design tokens */
   --background: oklch(0.12 0 0);
   --foreground: oklch(0.95 0 0);
@@ -10,26 +63,33 @@
   --card-foreground: oklch(0.95 0 0);
   --popover: oklch(0.15 0 0);
   --popover-foreground: oklch(0.95 0 0);
-  /* Primary color: #760716 (dark wine/burgundy) - see lib/colors.ts for hex source */
+  
   --primary: oklch(0.33 0.14 18);
   --primary-foreground: oklch(0.98 0 0);
+  
   --secondary: oklch(0.2 0 0);
   --secondary-foreground: oklch(0.95 0 0);
+  
   --muted: oklch(0.25 0 0);
   --muted-foreground: oklch(0.65 0 0);
+  
   --accent: oklch(0.33 0.14 18);
   --accent-foreground: oklch(0.98 0 0);
+  
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.95 0 0);
+  
   --border: oklch(0.25 0 0);
   --input: oklch(0.2 0 0);
+  
   --ring: oklch(0.33 0.14 18);
+  
   --chart-1: oklch(0.33 0.14 18);
   --chart-2: oklch(0.30 0.12 18);
   --chart-3: oklch(0.43 0.16 18);
   --chart-4: oklch(0.26 0.10 18);
   --chart-5: oklch(0.53 0.15 18);
-  --radius: 0.5rem;
+  
   --sidebar: oklch(0.15 0 0);
   --sidebar-foreground: oklch(0.95 0 0);
   --sidebar-primary: oklch(0.33 0.14 18);
@@ -38,12 +98,6 @@
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(0.25 0 0);
   --sidebar-ring: oklch(0.33 0.14 18);
-
-  /* Preview mode color variants (unified with primary) */
-  --preview: oklch(0.33 0.14 18);
-  --preview-light: oklch(0.43 0.16 18);
-  --preview-lighter: oklch(0.53 0.15 18);
-  --preview-dark: oklch(0.26 0.12 18);
 }
 
 @theme inline {
@@ -113,15 +167,4 @@
     pointer-events: none;
     z-index: 9999;
   }
-}
-
-.dark {
-  --sidebar: hsl(240 5.9% 10%);
-  --sidebar-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-primary: hsl(224.3 76.3% 48%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(240 3.7% 15.9%);
-  --sidebar-accent-foreground: hsl(240 4.8% 95.9%);
-  --sidebar-border: hsl(240 3.7% 15.9%);
-  --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }

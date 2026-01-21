@@ -8,23 +8,77 @@ A modern SaaS starter template for frontend engineering assessments. Built with 
 
 - [Node.js](https://nodejs.org/) (v20+)
 - [pnpm](https://pnpm.io/) (or npm/yarn)
-- [Docker](https://www.docker.com/) (for local Supabase)
-   Migrations are applied automatically during startup.
+- [Supabase Account](https://supabase.com/) (Cloud or Local with Docker)
 
-4. **Configure environment**
+### Setup Options
+
+#### Option A: Cloud Supabase (Recommended for Development)
+1. **Create a Supabase Project**
+   - Go to [supabase.com](https://supabase.com) and sign up
+   - Create a new project (free tier available)
+   - Wait for project to be provisioned
+
+2. **Get Your Keys**
+   - Navigate to Settings → API
+   - Copy `Project URL` and `Anon Key` (public key)
+   - Copy `Service Role Key` if you need admin operations
+
+3. **Configure Environment**
    ```bash
    cp .env.example .env.local
    ```
-
-   Then edit `.env.local` with the keys from step 3:
+   Edit `.env.local`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-anon-key"
+   SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
    ```
-   NEXT_PUBLIC_SUPABASE_URL="http://127.0.0.1:54521"
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="Here was key"
-   SUPABASE_SERVICE_ROLE_KEY="<your-secret-key>"
-   ```
 
-5. **Start development server**
+4. **Run Database Migrations**
    ```bash
+   # Copy the SQL from supabase/migrations/20251223234735_create_subscriptions_table.sql
+   # Paste it into Supabase Studio → SQL Editor and execute
+   ```
+
+5. **Install Dependencies & Start**
+   ```bash
+   pnpm install
+   pnpm dev
+   ```
+
+6. **Open** [http://localhost:3000](http://localhost:3000)
+
+#### Option B: Local Supabase (Docker Required)
+1. **Install Supabase CLI**
+   ```bash
+   npm install -g supabase
+   ```
+
+2. **Start Local Supabase**
+   ```bash
+   supabase start
+   ```
+   This will output your local credentials. Copy them.
+
+3. **Configure Environment**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Edit `.env.local` with credentials from step 2:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL="http://127.0.0.1:54321"
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="eyJh...your-anon-key..."
+   SUPABASE_SERVICE_ROLE_KEY="eyJh...your-service-role-key..."
+   ```
+
+4. **Apply Migrations**
+   ```bash
+   supabase db reset
+   ```
+
+5. **Install Dependencies & Start**
+   ```bash
+   pnpm install
    pnpm dev
    ```
 
@@ -90,8 +144,9 @@ CREATE TABLE subscriptions (
 ## Notes
 
 - **No real payments**: The upgrade flow is simulated (writes directly to database)
-- **Local auth**: Email verification is disabled in development mode
+- **Email verification**: Disabled in development mode for convenience
 - **Test accounts**: Use any email/password to sign up locally
+- **Supabase Setup**: This project supports both cloud and local Supabase. See Quick Start for setup instructions.
 
 ---
 
@@ -114,9 +169,10 @@ A fully functional SaaS frontend application matching the babiceva.ai reference 
 
 ### Issues I faced & how I solved them
 
-**Issue 1: Local Supabase Setup**
-- Problem: `supabase start` failed on Windows with Docker container conflicts and network issues
-- Solution: Switched to cloud Supabase (free tier). Created a project on supabase.co, ran SQL migrations manually, updated `.env.local` with cloud credentials. This was actually faster and more reliable than fighting Docker.
+**Issue 1: Local Supabase Setup on Windows**
+- Problem: `supabase start` failed with Docker connection issues, container name conflicts, and network initialization delays
+- Solution: Switched to **Cloud Supabase** (free tier). Created a project on supabase.co, ran SQL migrations through Supabase Studio, updated `.env.local` with cloud credentials. This approach was faster and more reliable for development iteration.
+- Trade-off: Cloud vs Local is a development choice - both use identical Supabase APIs. For production, either works equally well.
 
 **Issue 2: Auth Context Timeout Safety**
 - Problem: Auth context loading state could hang indefinitely if session fetch fails
