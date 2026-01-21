@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 import { SubscriptionProvider } from "@/contexts/subscription-context"
 import { AuthProvider } from "@/contexts/auth-context"
+import { ThemeProvider } from "@/components/theme-provider"
 import { Footer } from "@/components/footer"
 import { Toaster } from "sonner"
 import "./globals.css"
@@ -27,17 +28,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geist.className} antialiased flex flex-col min-h-screen`}>
-        <AuthProvider>
-          <SubscriptionProvider>
-            <div className="flex-1 flex flex-col">
-              {children}
-            </div>
-            <Footer />
-          </SubscriptionProvider>
-        </AuthProvider>
-        <Toaster position="top-center" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>
+            <SubscriptionProvider>
+              <div className="flex-1 flex flex-col">
+                {children}
+              </div>
+              <Footer />
+            </SubscriptionProvider>
+          </AuthProvider>
+          <Toaster position="top-center" />
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -9,36 +9,6 @@ A modern SaaS starter template for frontend engineering assessments. Built with 
 - [Node.js](https://nodejs.org/) (v20+)
 - [pnpm](https://pnpm.io/) (or npm/yarn)
 - [Docker](https://www.docker.com/) (for local Supabase)
-- [Supabase CLI](https://supabase.com/docs/guides/cli)
-
-### Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Waseem12wa/8x-hiring-template.git
-   cd 8x-hiring-template
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
-
-3. **Start local Supabase**
-   ```bash
-   # If you have another Supabase project running, stop it first:
-   # supabase stop --project-id <other-project>
-
-   supabase start
-   ```
-
-   This will output your local credentials (note: this project uses custom ports):
-   ```
-   API URL: http://127.0.0.1:54521
-   Publishable key: sb_publishable_...
-   Secret key: sb_secret_...
-   ```
-
    Migrations are applied automatically during startup.
 
 4. **Configure environment**

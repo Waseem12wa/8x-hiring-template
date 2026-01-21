@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ModeToggle } from "@/components/mode-toggle"
 
 export function Navigation() {
   const pathname = usePathname()
@@ -43,12 +44,15 @@ export function Navigation() {
               </div>
               <span className="font-bold text-xl tracking-tight">babiceva.ai</span>
             </Link>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-muted-foreground hover:text-foreground"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="flex items-center gap-2">
+              <ModeToggle />
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-muted-foreground hover:text-foreground"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -157,6 +161,7 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-4">
+            <ModeToggle />
             {!isLoading && (
               <>
                 {user ? (
