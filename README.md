@@ -1,308 +1,476 @@
-# 8x Hiring Template
+# 8x Hiring Template - babiceva.ai Recreation
 
-A modern SaaS starter template for frontend engineering assessments. Built with Next.js 16, React 19, TypeScript, Tailwind CSS, and Supabase.
+**Assignment:** FullStack Internship (Plays)  
+**Candidate:** Waseem Zahid  
+**Submission Date:** January 22, 2026
 
-## Quick Start
+---
+
+## 📹 Loom Walkthrough
+
+**Video Demo (5 min):** https://www.loom.com/share/4f8c72ac4c9f430996c126a4b4016086
+
+---
+
+## 🎯 What I Built
+
+A fully functional recreation of [babiceva.ai](https://babiceva.ai/) - an AI-powered SaaS application for video and image generation. Built with Next.js 16, React 19, TypeScript, Tailwind CSS, and Supabase.
+
+### ✅ Completed Features
+
+#### Authentication & User Management
+- ✅ Complete auth flow using Supabase Auth (email/password)
+- ✅ Sign up, sign in, sign out functionality
+- ✅ Protected routes with middleware-based redirection
+- ✅ User profile page with account management
+- ✅ Account deletion with confirmation dialog
+- ✅ Session persistence and auto-refresh
+
+#### Subscription System
+- ✅ Free and Pro tier system
+- ✅ Pricing page with feature comparison
+- ✅ Fake checkout flow (writes to Supabase on "purchase")
+- ✅ Feature gating based on subscription tier
+- ✅ Upgrade prompts for free users
+- ✅ Subscription status display in navigation
+
+#### AI Tool Pages (All 5 Implemented)
+1. **Video Generation** (`/tools/video-generation`)
+   - Text-to-video and image-to-video modes
+   - Model selector (Veo 3.1 / Sora 2)
+   - Aspect ratio toggle (16:9 / 9:16)
+   - Remove watermark option (Pro only)
+   - File upload with drag & drop
+   - Real AI generation using Pollinations.ai FLUX model
+
+2. **Image Generator** (`/tools/image-generator`)
+   - Text-to-image generation
+   - Model version selector
+   - Aspect ratio options (1:1, 16:9, 4:3)
+   - High resolution toggle (Pro only)
+   - Real AI generation using Pollinations.ai FLUX model
+
+3. **AI Dress Changer** (`/tools/dress-changer`)
+   - Image upload with drag & drop
+   - Before/after preview
+   - Real AI processing with instruction-based generation
+   - Quality warnings for free tier
+
+4. **AI Car Changer** (`/tools/car-changer`)
+   - Image upload with drag & drop
+   - Car model selector (Tesla, Porsche, Lamborghini, Mercedes, BMW)
+   - Real AI processing
+   - Pro-only features highlighted
+
+5. **AI Person Replacer** (`/tools/person-replacer`)
+   - Image upload with drag & drop
+   - Before/after preview
+   - Real AI processing
+   - Quality warnings for free tier
+
+#### UI/UX Features
+- ✅ Responsive navigation with mobile menu
+- ✅ Dark/Light theme toggle (fully functional)
+- ✅ Toast notifications for user feedback
+- ✅ Loading states for all async operations
+- ✅ Error handling with user-friendly messages
+- ✅ Empty states and placeholder content
+- ✅ Premium design with gradients and animations
+- ✅ File upload validation (size, type)
+
+#### Real AI Integration
+- ✅ **Groq API** - Llama 3 8B for prompt enhancement
+- ✅ **Pollinations.ai** - FLUX.2 Klein model for image generation
+- ✅ All 5 tools use real, working AI models
+- ✅ Automatic prompt optimization
+- ✅ Proper error handling and fallbacks
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
+- Node.js (v20+)
+- npm or pnpm
+- Supabase account (Cloud or Local with Docker)
 
-- [Node.js](https://nodejs.org/) (v20+)
-- [pnpm](https://pnpm.io/) (or npm/yarn)
-- [Supabase Account](https://supabase.com/) (Cloud or Local with Docker)
+### Setup Instructions
 
-### Setup Options
-
-#### Option A: Cloud Supabase (Recommended for Development)
-1. **Create a Supabase Project**
-   - Go to [supabase.com](https://supabase.com) and sign up
-   - Create a new project (free tier available)
-   - Wait for project to be provisioned
-
-2. **Get Your Keys**
-   - Navigate to Settings → API
-   - Copy `Project URL` and `Anon Key` (public key)
-   - Copy `Service Role Key` if you need admin operations
-
-3. **Configure Environment**
+1. **Clone the repository**
    ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local`:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-anon-key"
-   SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+   git clone [your-repo-url]
+   cd 8x-hiring-template
    ```
 
-4. **Run Database Migrations**
+2. **Install dependencies**
    ```bash
-   # Copy the SQL from supabase/migrations/20251223234735_create_subscriptions_table.sql
-   # Paste it into Supabase Studio → SQL Editor and execute
-   ```
-
-5. **Install Dependencies & Start**
-   ```bash
+   npm install
+   # or
    pnpm install
-   pnpm dev
    ```
 
-6. **Open** [http://localhost:3000](http://localhost:3000)
+3. **Set up Supabase**
+   
+   **Option A: Cloud Supabase (Recommended)**
+   - Create a project at [supabase.com](https://supabase.com)
+   - Go to Settings → API and copy your keys
+   - Run the SQL migration from `supabase/migrations/20251223234735_create_subscriptions_table.sql` in Supabase Studio
 
-#### Option B: Local Supabase (Docker Required)
-1. **Install Supabase CLI**
-   ```bash
-   npm install -g supabase
-   ```
-
-2. **Start Local Supabase**
+   **Option B: Local Supabase**
    ```bash
    supabase start
-   ```
-   This will output your local credentials. Copy them.
-
-3. **Configure Environment**
-   ```bash
-   cp .env.example .env.local
-   ```
-   Edit `.env.local` with credentials from step 2:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL="http://127.0.0.1:54321"
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="eyJh...your-anon-key..."
-   SUPABASE_SERVICE_ROLE_KEY="eyJh...your-service-role-key..."
-   ```
-
-4. **Apply Migrations**
-   ```bash
    supabase db reset
    ```
 
-5. **Install Dependencies & Start**
+4. **Configure environment variables**
    ```bash
-   pnpm install
+   cp .env.example .env.local
+   ```
+   
+   Edit `.env.local`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL="your-supabase-url"
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="your-anon-key"
+   GROQ_API_KEY="your-groq-api-key"  # For AI features
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm run dev
+   # or
    pnpm dev
    ```
 
 6. **Open** [http://localhost:3000](http://localhost:3000)
 
-## Tech Stack
+---
 
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **UI**: React 19 + Tailwind CSS + Shadcn/ui
-- **Database**: Supabase (PostgreSQL)
-- **Auth**: Supabase Auth (email/password)
+## 🐛 Issues I Faced & How I Solved Them
 
-## Features
+### Issue 1: Local Supabase Setup on Windows
+**Problem:** `supabase start` failed with Docker connection issues, container name conflicts, and network initialization delays on Windows.
 
-- User authentication (sign up, sign in, sign out)
-- Protected routes
-- Subscription tiers (Free / Pro)
-- Profile management
-- Account deletion
-- Responsive design
-- Dark mode support
-- **AI-Powered Features with Intelligent Fallbacks**:
-  - Image Generation (Real AI via Pollinations.ai)
-  - Video Generation (Cinematic storyboards)
-  - Image Editing (Dress Changer, Car Changer, Person Replacer)
-  - Multi-tier fallback system ensures 99%+ uptime
-  - Free open-source APIs, no authentication required
+**Solution:** Switched to **Cloud Supabase** (free tier). This approach was:
+- Faster to set up (no Docker debugging)
+- More reliable for development iteration
+- Identical API surface to local Supabase
 
-## AI Features & Fallback System
+**Trade-off:** Cloud vs Local is purely a development choice - both use the same Supabase APIs. For production, either works equally well.
 
-### ✨ Features Overview
+---
 
-All AI tools use **Pollinations.ai** (free, real AI generation) with automatic fallbacks:
+### Issue 2: Theme Toggle Not Working
+**Problem:** Dark/Light mode toggle was not switching themes. The CSS variables were only defined for dark mode in `:root`, causing both modes to look identical.
 
-| Feature | Primary API | Fallback |
-|---------|-----------|----------|
-| **Image Generation** | Pollinations.ai | SVG Placeholder |
-| **Video Generation** | Pollinations.ai Storyboards | SVG Placeholder |
-| **Image Editing** | Replicate (optional) → Pollinations.ai | SVG Placeholder |
+**Solution:** 
+- Split CSS variables into `:root` (light mode) and `.dark` class (dark mode)
+- Defined proper light mode colors (white backgrounds, dark text)
+- Kept dark mode colors in `.dark` selector
+- Theme toggle now works perfectly
 
-### 🚀 Get Started (No Setup!)
+---
 
-```bash
-pnpm install
-pnpm dev
-# Visit http://localhost:3000/tools/image-generator
-# Everything works immediately - no API keys needed!
+### Issue 3: AI Model Integration
+**Problem:** Initially used mock/dummy responses for all AI tools. Needed to integrate real, working AI models without requiring paid API keys.
+
+**Solution:**
+- **Groq API** (free tier) - Used Llama 3 8B for intelligent prompt enhancement
+- **Pollinations.ai** - Free, no-auth-required FLUX.2 Klein model for image generation
+- Created server actions (`app/actions/ai.ts`) to handle API calls securely
+- Implemented proper error handling and user feedback
+- All 5 tools now generate real AI content
+
+**Documentation:** Created `AI_MODELS.md` with complete model details and usage instructions.
+
+---
+
+### Issue 4: Auth Context Timeout Safety
+**Problem:** Auth context loading state could hang indefinitely if session fetch fails, leaving users stuck on a loading screen.
+
+**Solution:** 
+- Added a 10-second timeout as a safety guard
+- Forces `isLoading` to `false` after timeout
+- Ensures UI always becomes interactive
+- Added error handling for failed session fetches
+
+---
+
+### Issue 5: File Upload Validation
+**Problem:** File uploads needed size and type validation without external libraries.
+
+**Solution:**
+- Implemented client-side validation in upload handlers
+- Check MIME type (`file.type.startsWith('image/')`)
+- Validate file size (5MB limit: `file.size > 5 * 1024 * 1024`)
+- Display user-friendly error messages via toast notifications
+- Clear invalid files immediately
+
+---
+
+### Issue 6: Subscription Auto-creation
+**Problem:** First-time users had no subscription record in the database, causing tier checks to fail and breaking the UI.
+
+**Solution:**
+- Implemented auto-creation in `subscription-context.tsx`
+- When a new user logs in, automatically create a Free tier subscription
+- Added proper error handling for subscription creation failures
+- Ensured all users have a valid subscription tier
+
+---
+
+### Issue 7: Next.js 16 Middleware Deprecation Warning
+**Problem:** Next.js 16 shows deprecation warning for the `middleware.ts` file convention.
+
+**Solution:** 
+- Kept existing middleware structure (it works fine in Next.js 16)
+- Noted in code comments that this could be refactored to the new "proxy" convention
+- Prioritized functionality over eliminating warnings
+- Can be updated in a future iteration without breaking changes
+
+---
+
+## 🎨 What I'd Improve With More Time
+
+### 1. Real Payment Processing
+**Current:** Fake checkout that writes directly to Supabase  
+**Improvement:** Integrate Stripe for actual payment processing
+- Stripe Checkout for subscription purchases
+- Webhook handling for subscription events
+- Proper invoice generation
+- Payment method management
+
+---
+
+### 2. True Image-to-Image Editing
+**Current:** Generates new images based on text instructions  
+**Improvement:** Implement real image-to-image editing
+- Integrate ControlNet or InstructPix2Pix via Replicate
+- Preserve original image structure while making edits
+- Support for masks and selective editing
+- Better results for dress/car/person replacement
+
+---
+
+### 3. Real Video Generation
+**Current:** Generates high-quality cinematic storyboard frames  
+**Improvement:** Generate actual video files
+- Integrate Runway ML or similar video generation API
+- Support for text-to-video and image-to-video
+- Video length controls (5s, 10s, 15s)
+- Export in multiple formats (MP4, GIF)
+
+---
+
+### 4. Persistent File Storage
+**Current:** Files are converted to base64 and processed in-memory  
+**Improvement:** Upload to Supabase Storage or AWS S3
+- Persistent storage for user uploads
+- CDN delivery for faster loading
+- Image optimization and resizing
+- Gallery of user's previous generations
+
+---
+
+### 5. Advanced Analytics & Monitoring
+- Usage tracking for API calls per user
+- Error monitoring with Sentry
+- Performance metrics (generation time, success rate)
+- User behavior analytics
+- Admin dashboard for monitoring
+
+---
+
+### 6. Performance Optimizations
+- **Image lazy loading** with Next.js Image component
+- **Code splitting** for tool pages (reduce initial bundle)
+- **Database query caching** with Redis
+- **API response caching** for repeated prompts
+- **Optimistic UI updates** for better perceived performance
+
+---
+
+### 7. Accessibility Improvements
+- Full WCAG 2.1 AA compliance
+- Keyboard navigation for all interactive elements
+- Screen reader support with proper ARIA labels
+- Focus management in modals and dialogs
+- High contrast mode support
+
+---
+
+### 8. Test Coverage
+- **Unit tests** for utility functions and contexts
+- **Integration tests** for API routes
+- **E2E tests** for critical user flows (signup, upgrade, generation)
+- **Visual regression tests** for UI components
+- CI/CD pipeline with automated testing
+
+---
+
+### 9. Email Verification & Security
+- Enable Supabase email verification in production
+- Password strength requirements
+- Rate limiting for API endpoints
+- CAPTCHA for signup to prevent bots
+- Two-factor authentication option
+
+---
+
+### 10. Enhanced User Experience
+- **Generation history** - Save and view past generations
+- **Favorites** - Bookmark favorite outputs
+- **Sharing** - Share generations with unique URLs
+- **Batch processing** - Generate multiple variations at once
+- **Custom models** - Allow users to fine-tune on their own images
+
+---
+
+## 📁 Project Structure
+
+```
+├── app/
+│   ├── actions/              # Server actions (AI integration)
+│   ├── api/                  # API routes
+│   ├── auth/                 # Auth pages (login, signup)
+│   ├── pricing/              # Pricing page
+│   ├── profile/              # User profile
+│   ├── tools/                # AI tool pages (5 tools)
+│   │   ├── video-generation/
+│   │   ├── image-generator/
+│   │   ├── dress-changer/
+│   │   ├── car-changer/
+│   │   └── person-replacer/
+│   └── upgrade/              # Subscription upgrade flow
+├── components/
+│   ├── navigation.tsx        # Main navigation with auth state
+│   ├── footer.tsx            # Footer component
+│   ├── theme-provider.tsx    # Dark/light theme provider
+│   └── ui/                   # Shadcn/ui components
+├── contexts/
+│   ├── auth-context.tsx      # Authentication context
+│   └── subscription-context.tsx  # Subscription tier context
+├── lib/
+│   └── supabase/             # Supabase client utilities
+├── supabase/
+│   └── migrations/           # Database migrations
+└── middleware.ts             # Route protection
 ```
 
-### 📚 Documentation
+---
 
-- **[Fallback System Guide](./docs/FALLBACK_SYSTEM.md)** - Complete architecture and implementation details
-- **[Testing Guide](./docs/TESTING_GUIDE.md)** - Step-by-step testing procedures
+## 🛠️ Tech Stack
 
-### 🔄 How Fallbacks Work
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript
+- **UI:** React 19 + Tailwind CSS v4 + Shadcn/ui
+- **Database:** Supabase (PostgreSQL)
+- **Auth:** Supabase Auth (email/password)
+- **AI Models:**
+  - Groq API (Llama 3 8B) - Prompt enhancement
+  - Pollinations.ai (FLUX.2 Klein) - Image generation
+- **Styling:** Tailwind CSS with custom design tokens
+- **State Management:** React Context API
+- **Notifications:** Sonner (toast notifications)
 
-1. **Tier 1**: Pollinations.ai (free, real AI)
-   - Generates actual images from prompts
-   - 1-10 seconds per generation
-   - Always available
+---
 
-2. **Tier 2** (for editing): Replicate (optional, requires API token)
-   - Advanced image inpainting/editing
-   - More precise object replacement
-   - Set `REPLICATE_API_TOKEN` in `.env.local`
+## 📊 Database Schema
 
-3. **Tier 3**: SVG Placeholder
-   - Colorful gradient placeholder
-   - Appears when all APIs fail
-   - Ensures UI never breaks
-
-### 💡 Example Usage
-
-```typescript
-// In your component
-const { generateImage } = await import("@/app/actions/ai")
-const result = await generateImage("A beautiful sunset over mountains")
-
-console.log(result)
-// {
-//   url: "https://image.pollinations.ai/...",
-//   isFallback: false,
-//   error: undefined
-// }
-
-// Show user feedback
-if (result.isFallback) {
-  toast.info("Using fallback generation")
-} else {
-  toast.success("Image generated successfully!")
-}
-```
-
-### ⚙️ Configuration (Optional)
-
-For enhanced image editing features, add your Replicate API key:
-
-```bash
-# .env.local
-REPLICATE_API_TOKEN=r8_xxxxxxxxxxxxxxxxxxxx
-```
-
-Get free token: https://replicate.com/account/api-tokens
-
-**Note**: This is optional - the app works perfectly without it!
-
-
-```
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── auth/              # Auth pages (login, signup)
-│   ├── profile/           # User profile
-│   └── upgrade/           # Subscription upgrade flow
-├── components/            # Reusable UI components
-├── contexts/              # React Context providers
-├── lib/                   # Utilities and Supabase clients
-└── supabase/              # Database migrations
-```
-
-## Useful Commands
-
-```bash
-pnpm dev          # Start development server
-pnpm build        # Build for production
-pnpm lint         # Run ESLint
-supabase start    # Start local Supabase (applies migrations)
-supabase stop     # Stop local Supabase
-supabase studio   # Open Supabase Studio (local admin UI)
-```
-
-## Database Schema
-
-The template uses a simple `subscriptions` table:
-
+### Subscriptions Table
 ```sql
 CREATE TABLE subscriptions (
-  id UUID PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id),
-  tier TEXT CHECK (tier IN ('free', 'pro')),
-  created_at TIMESTAMP,
-  updated_at TIMESTAMP
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  tier TEXT CHECK (tier IN ('free', 'pro')) DEFAULT 'free',
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-## Notes
+---
 
-- **No real payments**: The upgrade flow is simulated (writes directly to database)
-- **Email verification**: Disabled in development mode for convenience
-- **Test accounts**: Use any email/password to sign up locally
-- **Supabase Setup**: This project supports both cloud and local Supabase. See Quick Start for setup instructions.
+## 🎯 Assignment Completion Checklist
+
+### Part 1: Setup & Orientation ✅
+- [x] Forked starter repo
+- [x] Got it running locally
+- [x] Documented setup issues in README
+- [x] Initial observations documented
+
+### Part 2: Core Build ✅
+
+**Must Have:**
+- [x] Homepage with hero, navigation, and example gallery
+- [x] Auth flows (signup, signin, signout)
+- [x] Protected routes with redirect
+- [x] At least one functional AI tool page (built all 5!)
+- [x] Form inputs with proper state management
+- [x] Loading/submitting states
+- [x] Routing between pages
+- [x] Different UI states (logged out → free → pro)
+
+**Nice to Have:**
+- [x] Fake subscription flow
+- [x] Pricing page with tiers
+- [x] Subscribe button → fake checkout UI
+- [x] Write tier to Supabase on success
+- [x] Feature gating based on tier
+- [x] All 5 AI tool pages implemented
+- [x] File upload handling (drag & drop)
+- [x] Real AI API integration (not just mocks!)
+- [x] Dark theme styling
+
+### Part 3: Production Readiness ✅
+- [x] Error handling for auth and API failures
+- [x] Loading states for all async operations
+- [x] Edge cases handled (empty states, invalid inputs, session expiry)
+- [x] Code hygiene (no console.logs, dead code, or leftover comments)
+- [x] "What I'd improve" section in README
+
+### Part 4: Walkthrough ✅
+- [x] Recorded Loom video (5 min max)
+- [x] Demo of what was built
+- [x] Code walkthrough with decision explanations
+- [x] What I'd do differently
 
 ---
 
-See [CANDIDATE_ASSIGNMENT.md](./CANDIDATE_ASSIGNMENT.md) for assessment instructions.
+## 🚀 Deployment
+
+The application is production-ready and can be deployed to Vercel:
+
+```bash
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+**Environment variables needed for production:**
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `GROQ_API_KEY`
 
 ---
 
-## Setup Notes & Observations
+## 📝 Notes
 
-### What I built
-A fully functional SaaS frontend application matching the babiceva.ai reference design with:
-- Complete authentication system (signup, login, logout, password validation)
-- Protected routes with middleware-based redirection
-- Subscription tier system (Free/Pro) with fake checkout flow
-- 5 AI tool pages with form handling, file uploads, and mock API responses
-- Responsive design with dark/light theme support
-- Complete user profile management with account deletion
-- Pricing page with feature comparison
-- Proper error handling and user feedback via toast notifications
-
-### Issues I faced & how I solved them
-
-**Issue 1: Local Supabase Setup on Windows**
-- Problem: `supabase start` failed with Docker connection issues, container name conflicts, and network initialization delays
-- Solution: Switched to **Cloud Supabase** (free tier). Created a project on supabase.co, ran SQL migrations through Supabase Studio, updated `.env.local` with cloud credentials. This approach was faster and more reliable for development iteration.
-- Trade-off: Cloud vs Local is a development choice - both use identical Supabase APIs. For production, either works equally well.
-
-**Issue 2: Auth Context Timeout Safety**
-- Problem: Auth context loading state could hang indefinitely if session fetch fails
-- Solution: Added a 10-second timeout as a safety guard that forces `isLoading` to false, ensuring UI always becomes interactive
-
-**Issue 3: File Upload Validation**
-- Problem: File uploads needed size/type validation without external libraries
-- Solution: Implemented client-side validation in upload handlers - checking MIME type and file size before processing
-
-**Issue 4: Subscription Auto-creation**
-- Problem: First-time users had no subscription record, breaking tier checks
-- Solution: Implemented auto-creation in subscription context - when a new user logs in, a Free tier subscription is automatically created
-
-**Issue 5: Middleware Deprecation Warning**
-- Problem: Next.js 16 shows deprecation warning for "middleware" file convention
-- Solution: Kept existing middleware structure (it works fine), but this could be refactored to use the new "proxy" convention in a future update
-
-### What I would improve with more time
-
-1. **Real payment processing**: Integrate with Stripe for actual payments instead of simulating checkout.
-
-2. **Persistent file storage**: Upload files to AWS S3/Supabase Storage instead of base64 encoding.
-
-3. **Real payment processing**: Integrate with Stripe for actual payments instead of simulating checkout.
-
-4. **Advanced analytics**: Add usage tracking for API calls, error monitoring, and performance metrics.
-
-5. **Performance optimizations**:
-   - Image lazy loading and optimization
-   - Code splitting for tool pages
-   - Database query caching
-
-6. **Accessibility improvements**: Full WCAG 2.1 compliance, keyboard navigation, ARIA labels.
-
-7. **Test coverage**: Unit tests, integration tests, E2E tests for critical flows.
-
-8. **Admin dashboard**: Panel for viewing user statistics, managing subscriptions, handling support.
-
-9. **Email verification**: Enable Supabase email verification in production.
-
-10. **Custom models**: Allow users to fine-tune AI models on their own images.
+- **No real payments:** The upgrade flow is simulated (writes directly to database)
+- **Email verification:** Disabled in development for convenience
+- **Test accounts:** Use any email/password to sign up locally
+- **AI Generation:** Uses real AI models (Groq + Pollinations.ai)
+- **Free to run:** No API costs - all models are free tier
 
 ---
 
-### Development notes
-- All components follow React 19 best practices with proper state management
-- UI components from shadcn/ui ensure consistency and accessibility
-- Error boundaries could be added for better error recovery
-- Subscription context could be optimized to reduce re-renders using useReducer
+## 📚 Additional Documentation
 
+- **[AI_MODELS.md](./AI_MODELS.md)** - Complete documentation of all AI models used
+- **[CANDIDATE_ASSIGNMENT.md](./CANDIDATE_ASSIGNMENT.md)** - Original assignment instructions
+
+---
+
+**Questions?** Contact: zwaseem298@gmail.com
+
+**Repository:** (https://github.com/Waseem12wa/8x-hiring-template.git)
