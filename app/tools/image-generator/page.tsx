@@ -32,12 +32,16 @@ export default function ImageGeneratorPage() {
         setGeneratedImage(null)
 
         try {
-            // Import dynamically to avoid server-action issues in client component build if not set up perfect
-            // But we can import at top level usually. For now, let's assume imports work.
             const { generateImage } = await import("@/app/actions/ai")
             const result = await generateImage(prompt)
-            setGeneratedImage(result.url)
-            toast.success("Image generated with Pollinations.ai (Enhanced by Groq)")
+
+            if (result.success) {
+                setGeneratedImage(result.url)
+                toast.success(`Image generated using ${result.model}`)
+            } else {
+                toast.error("Failed to generate image")
+                console.error(result.error)
+            }
         } catch (error) {
             console.error(error)
             toast.error("Failed to generate image")

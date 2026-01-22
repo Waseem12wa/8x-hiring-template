@@ -75,25 +75,26 @@ export default function DressChangerPage() {
 
     const handleProcess = async () => {
         if (!file) return
-
         setIsProcessing(true)
 
         try {
-            // Convert to base64
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = async () => {
                 const base64 = reader.result as string;
 
                 const { editImage } = await import("@/app/actions/ai")
-                const response = await editImage(base64, "Change the dress to a high fashion outfit", "clothing")
+                const response = await editImage(base64, "Change to an elegant high-fashion outfit", "clothing")
 
                 if (response.success) {
                     setResult(response.url)
-                    toast.success("Dress changed successfully!")
-                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                    toast.success(`Processed using ${response.model}`)
+                    if (response.note) {
+                        toast.info(response.note, { duration: 5000 })
+                    }
                 } else {
                     toast.error("Failed to process image")
+                    console.error(response.error)
                 }
                 setIsProcessing(false)
             };

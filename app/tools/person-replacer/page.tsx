@@ -74,7 +74,6 @@ export default function PersonReplacerPage() {
 
     const handleProcess = async () => {
         if (!file) return
-
         setIsProcessing(true)
 
         try {
@@ -84,14 +83,17 @@ export default function PersonReplacerPage() {
                 const base64 = reader.result as string;
 
                 const { editImage } = await import("@/app/actions/ai")
-                const response = await editImage(base64, "Replace the person in the image with a cybernetic android", "person")
+                const response = await editImage(base64, "Replace the person with a futuristic character", "person")
 
                 if (response.success) {
                     setResult(response.url)
-                    toast.success("Person replaced successfully!")
-                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                    toast.success(`Processed using ${response.model}`)
+                    if (response.note) {
+                        toast.info(response.note, { duration: 5000 })
+                    }
                 } else {
                     toast.error("Failed to process image")
+                    console.error(response.error)
                 }
                 setIsProcessing(false)
             };

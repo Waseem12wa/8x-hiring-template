@@ -83,7 +83,6 @@ export default function CarChangerPage() {
 
     const handleProcess = async () => {
         if (!file) return
-
         setIsProcessing(true)
 
         try {
@@ -94,14 +93,17 @@ export default function CarChangerPage() {
 
                 const { editImage } = await import("@/app/actions/ai")
                 const carName = carModels.find(c => c.id === selectedCar)?.name || "sports car"
-                const response = await editImage(base64, `Change the car to a ${carName}`, "car")
+                const response = await editImage(base64, `Replace the car with a ${carName}`, "car")
 
                 if (response.success) {
                     setResult(response.url)
-                    toast.success("Car replaced successfully!")
-                    if (response.isFallback) toast.info("Used fallback generation due to high demand")
+                    toast.success(`Processed using ${response.model}`)
+                    if (response.note) {
+                        toast.info(response.note, { duration: 5000 })
+                    }
                 } else {
                     toast.error("Failed to process image")
+                    console.error(response.error)
                 }
                 setIsProcessing(false)
             };

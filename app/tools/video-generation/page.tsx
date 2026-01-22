@@ -64,23 +64,24 @@ export default function VideoGenerationPage() {
         if (sourceType === "image" && !selectedFile) return
 
         setIsGenerating(true)
-        setPreviewUrl(null) // Clear previous result
+        setPreviewUrl(null)
 
         try {
             const { generateVideo } = await import("@/app/actions/ai")
 
-            // For now, prompt only
-            const inputPrompt = sourceType === "text" ? prompt : "An animated video from the uploaded image"
+            const inputPrompt = sourceType === "text" ? prompt : "Cinematic animation of the uploaded scene"
             const result = await generateVideo(inputPrompt)
 
-            if (result.error) {
-                toast.warning("Video Model Busy: Generated a storyboard frame instead.")
+            if (result.success) {
+                setPreviewUrl(result.image)
+                toast.success(`Generated using ${result.model}`)
+                if (result.note) {
+                    toast.info(result.note, { duration: 5000 })
+                }
+            } else {
+                toast.error("Failed to generate video")
+                console.error(result.error)
             }
-
-            // We treat the image as a 'video' preview for now since we don't have a stable free video API
-            // Ideally we would put this in a <video> tag if it ended in .mp4
-            setPreviewUrl(result.image)
-            toast.success(result.error ? "Storyboard generated" : "Video generated successfully!")
         } catch (error) {
             console.error(error)
             toast.error("Failed to generate video")
